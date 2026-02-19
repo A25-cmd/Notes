@@ -18,14 +18,12 @@
             --sidebar-width: 320px;
             --fire: #ff4d00;
         }
-
         .theme-tech { --accent: var(--tech); }
         .theme-sales { --accent: var(--sales); }
         .theme-voice { --accent: var(--voice); }
         .theme-all { --accent: #8b5cf6; }
 
         * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        
         body { 
             margin: 0; font-family: 'Cairo', sans-serif; color: var(--text); background: var(--bg);
             background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1), transparent),
@@ -33,7 +31,6 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* اللوجو الناري */
         .fire-logo {
             width: 80px; height: 80px; background: #111; border-radius: 20px;
             display: flex; align-items: center; justify-content: center;
@@ -98,7 +95,7 @@
 
         .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; max-width: 1300px; margin: 0 auto; padding: 0 25px 120px; }
         
-        .note-card {  
+        .note-card { 
             background: var(--card); border-radius: 30px; border: 1px solid var(--border); 
             padding: 30px; height: 220px; display: flex; flex-direction: column; 
             cursor: pointer; position: relative; backdrop-filter: blur(5px);
@@ -121,15 +118,12 @@
         input, textarea, select { width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 15px; background: #1e293b; color: #fff; border: 1px solid var(--border); font-family: inherit; }
 
         .fab { position: fixed; bottom: 40px; left: 40px; width: 80px; height: 80px; border-radius: 30px; background: var(--accent); color: #000; border: none; font-size: 40px; cursor: pointer; z-index: 100; box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4); }
-        
-        /* زر العودة للأعلى الجديد */
         .back-to-top { 
             position: fixed; bottom: 135px; left: 55px; width: 50px; height: 50px; 
             border-radius: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); 
             color: var(--accent); cursor: pointer; z-index: 99; display: none; 
             align-items: center; justify-content: center; font-size: 20px; backdrop-filter: blur(10px);
         }
-        .back-to-top:hover { background: var(--accent); color: #000; transform: translateY(-5px); }
         .back-to-top.visible { display: flex; }
 
         #toast { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 45px; border-radius: 20px; font-weight: 800; display: none; z-index: 5000; }
@@ -139,7 +133,6 @@
 <body class="theme-all">
 
 <div id="toast">تم! ✅</div>
-
 <button id="backToTop" class="back-to-top" onclick="scrollToTop()">▲</button>
 
 <aside id="sidebar" class="sidebar">
@@ -166,8 +159,8 @@
 
 <header>
     <div class="nav-container">
-        <div class="app-branding">
-             <div class="mini-fire">H</div>
+        <div class="app-branding"> 
+             <div class="mini-fire">H</div> 
              <div class="app-title">BEEF AURA PRO</div>
         </div>
         <div class="main-nav">
@@ -222,8 +215,6 @@
 
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     function toggleSidebarPosition() { document.getElementById('sidebar').classList.toggle('left'); }
-    
-    // العودة للأعلى
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     
     window.onscroll = function() {
@@ -276,10 +267,10 @@
             if(query) titleHTML = n.title.replace(new RegExp(query, 'gi'), m => `<span class="highlight">${m}</span>`);
             
             card.onclick = () => { 
-                 navigator.clipboard.writeText(n.content);
-                 copyTotal++; localStorage.setItem('aura_copy_total', copyTotal);
-                 document.getElementById('stat-copies').innerText = copyTotal;
-                 showToast("تم النسخ!"); 
+                navigator.clipboard.writeText(n.content); 
+                copyTotal++; localStorage.setItem('aura_copy_total', copyTotal); 
+                document.getElementById('stat-copies').innerText = copyTotal;
+                showToast("تم النسخ!"); 
             };
             card.ondblclick = () => openModal(n.id);
             
@@ -334,13 +325,13 @@
         container.innerHTML = '';
         if(type === 'export') {
             title.innerText = "تصدير البيانات";
-            [{n:'JSON (Backup)', f:exportJSON}, {n:'Text (.txt)', f:exportTXT}, {n:'Excel (CSV)', f:exportCSV}].forEach(fmt => {
+            [{n:'JSON (Backup)', f:exportJSON}, {n:'Beeftext (.btbackup)', f:exportBeeftext}, {n:'Text (.txt)', f:exportTXT}, {n:'Excel (CSV)', f:exportCSV}].forEach(fmt => {
                 const btn = document.createElement('div'); btn.className = 'popup-btn'; btn.innerText = fmt.n;
                 btn.onclick = () => { fmt.f(); closePopup(); }; container.appendChild(btn);
             });
         } else {
             title.innerText = "استيراد بيانات";
-            ['Backup', 'Text', 'CSV / Excel'].forEach(fmt => {
+            ['Backup', 'Beeftext (.btbackup)', 'Text', 'CSV / Excel'].forEach(fmt => {
                 const btn = document.createElement('div'); btn.className = 'popup-btn'; btn.innerText = fmt;
                 btn.onclick = () => { currentImportFormat = fmt; document.getElementById('fileInput').click(); closePopup(); };
                 container.appendChild(btn);
@@ -354,11 +345,30 @@
         const blob = new Blob([content], {type: type});
         const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fileName; a.click();
     }
+    
     function exportJSON() { downloadFile(JSON.stringify(notes, null, 2), 'Aura_Backup.json', 'application/json'); }
     function exportTXT() { downloadFile(notes.map(n => `[${n.title}]\n${n.content}\n---`).join('\n\n'), 'Aura_Notes.txt', 'text/plain'); }
     function exportCSV() { 
         let csv = "ID,Category,Title,Content\n" + notes.map(n => `${n.id},${n.main},"${n.title.replace(/"/g,'""')}","${n.content.replace(/"/g,'""')}"`).join('\n');
         downloadFile("\ufeff" + csv, 'Aura_Data.csv', 'text/csv;charset=utf-8;');
+    }
+    
+    // تصدير متوافق مع برنامج Beeftext الأصلي
+    function exportBeeftext() {
+        const btData = {
+            combos: notes.map(n => ({
+                keyword: n.title,
+                snippet: n.content,
+                enabled: true,
+                matchingMode: 0,
+                caseSensitivity: 0,
+                creationDateTime: new Date(n.id).toISOString(),
+                modificationDateTime: new Date().toISOString(),
+                name: n.title,
+                uuid: `{${crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2)}}`
+            }))
+        };
+        downloadFile(JSON.stringify(btData, null, 2), 'BeefAura_Export.btbackup', 'application/json');
     }
 
     function handleFileImport(event) {
@@ -368,17 +378,33 @@
             const raw = e.target.result;
             try {
                 let imported = [];
-                if(currentImportFormat === 'Backup') imported = JSON.parse(raw);
-                else if(currentImportFormat === 'Text') {
+                const parsed = JSON.parse(raw);
+
+                // فحص إذا كان الملف هو تنسيق Beeftext (يحتوي على مفتاح combos)
+                if (parsed.combos && Array.isArray(parsed.combos)) {
+                    imported = parsed.combos.map(combo => ({
+                        id: Date.now() + Math.random(),
+                        main: 'tech', 
+                        title: combo.keyword || combo.name || 'بدون عنوان',
+                        content: combo.snippet || '',
+                        pinned: false
+                    }));
+                } else if (Array.isArray(parsed)) {
+                    // التنسيق العادي للنسخ الاحتياطي الخاص بالبرنامج
+                    imported = parsed;
+                } else if(currentImportFormat === 'Text') {
                     raw.split('---').forEach(s => {
                         const lines = s.trim().split('\n');
                         if(lines.length >= 2) imported.push({ id: Date.now()+Math.random(), main: 'tech', title: lines[0].replace(/[\[\]]/g, ''), content: lines.slice(1).join('\n'), pinned: false });
                     });
                 }
-                notes = [...notes, ...imported];
-                localStorage.setItem('beef_aura_final_26', JSON.stringify(notes));
-                render(); showToast("تم الاستيراد!");
-            } catch(err) { showToast("خطأ في الملف!"); }
+                
+                if (imported.length > 0) {
+                    notes = [...notes, ...imported];
+                    localStorage.setItem('beef_aura_final_26', JSON.stringify(notes));
+                    render(); showToast(`تم استيراد ${imported.length} كرت بنجاح!`);
+                }
+            } catch(err) { showToast("خطأ في تنسيق الملف!"); console.error(err); }
         };
         reader.readAsText(file);
     }
@@ -392,5 +418,5 @@
 
     render();
 </script>
-</body>
+</body>.
 </html>
