@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beef Aura Pro | 2026 Pinned Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05070a; 
+            --card: rgba(30, 41, 59, 0.7); 
+            --text: #f8fafc; 
+            --accent: #8b5cf6; 
+            --tech: #06b6d4; 
+            --sales: #fbbf24; 
+            --voice: #f472b6;
+            --border: rgba(255, 255, 255, 0.1);
+            --sidebar-width: 320px;
+            --fire: #ff4d00;
+        }
+
+        .theme-tech { --accent: var(--tech); }
+        .theme-sales { --accent: var(--sales); }
+        .theme-voice { --accent: var(--voice); }
+        .theme-all { --accent: #8b5cf6; }
+
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        body { 
+            margin: 0; font-family: 'Cairo', sans-serif; color: var(--text); background: var(--bg);
+            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1), transparent),
+                              radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.1), transparent);
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        /* اللوجو الناري */
+        .fire-logo {
+            width: 80px; height: 80px; background: #111; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 50px; font-weight: 900; color: #fff;
+            text-shadow: 0 0 10px #ff4d00, 0 0 20px #ff9900, 0 0 30px #ff4d00;
+            border: 2px solid #ff4d00; box-shadow: 0 0 20px rgba(255, 77, 0, 0.4);
+            margin: 0 auto; position: relative; overflow: hidden;
+        }
+        .fire-logo::before {
+            content: ""; position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(transparent, rgba(255, 77, 0, 0.2));
+            animation: flame 2s infinite alternate;
+        }
+        @keyframes flame { from { transform: translateY(10%); } to { transform: translateY(-10%); } }
+
+        .sidebar {
+            position: fixed; top: 0; right: -350px; width: var(--sidebar-width); height: 100%;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px);
+            border-left: 1px solid var(--border); z-index: 3000; padding: 40px 25px;
+            box-shadow: -15px 0 50px rgba(0,0,0,0.8); display: flex; flex-direction: column;
+        }
+        .sidebar.active { right: 0; }
+        .sidebar.left { right: auto; left: -350px; border-left: none; border-right: 1px solid var(--border); }
+        .sidebar.left.active { left: 0; }
+
+        .sidebar-header { font-size: 22px; font-weight: 900; color: #fff; margin-top: 15px; text-align: center;}
+        .sidebar-tagline { font-size: 11px; opacity: 0.5; margin-bottom: 30px; display: block; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
+
+        .stats-panel { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 20px; margin-bottom: 25px; border: 1px solid var(--border); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center; }
+        .stat-val { display: block; font-size: 20px; font-weight: 900; color: var(--accent); }
+        .stat-lbl { font-size: 10px; opacity: 0.5; text-transform: uppercase; }
+
+        .actions-grid { display: flex; flex-direction: column; gap: 12px; }
+        .action-btn { 
+            width: 100%; display: flex; align-items: center; gap: 12px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); 
+            color: #fff; padding: 14px 20px; border-radius: 16px; 
+            cursor: pointer; font-weight: 600; font-family: inherit; font-size: 13px;
+        }
+        .action-btn:hover { background: var(--accent); color: #000; transform: translateX(-10px); box-shadow: 0 0 20px var(--accent); }
+
+        header { 
+            background: rgba(5, 7, 10, 0.8); backdrop-filter: blur(15px);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); padding: 15px 0;
+        }
+        .nav-container { max-width: 1300px; margin: 0 auto; padding: 0 25px; display: flex; justify-content: space-between; align-items: center; }
+        .app-branding { display: flex; align-items: center; gap: 12px; }
+        .mini-fire { font-size: 20px; color: #ff4d00; text-shadow: 0 0 5px #ff4d00; }
+        .app-title { font-weight: 900; font-size: 20px; letter-spacing: -1px; color: var(--text); }
+        
+        .main-nav { display: flex; gap: 8px; }
+        .nav-item { cursor: pointer; padding: 8px 18px; border-radius: 10px; font-weight: 700; opacity: 0.4; font-size: 13px; }
+        .nav-item.active { opacity: 1; background: rgba(255,255,255,0.05); color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+
+        .search-area { max-width: 1300px; margin: 40px auto; padding: 0 25px; }
+        .search-input { 
+            width: 100%; background: var(--card); border: 1px solid var(--border); 
+            padding: 18px 30px; border-radius: 25px; color: #fff; outline: none;
+            font-size: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; max-width: 1300px; margin: 0 auto; padding: 0 25px 120px; }
+        
+        .note-card {  
+            background: var(--card); border-radius: 30px; border: 1px solid var(--border); 
+            padding: 30px; height: 220px; display: flex; flex-direction: column; 
+            cursor: pointer; position: relative; backdrop-filter: blur(5px);
+        }
+        .note-card.pinned { border: 2px solid var(--accent) !important; box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); }
+        .pin-icon { position: absolute; top: 15px; left: 15px; font-size: 18px; filter: grayscale(1); opacity: 0.3; transition: 0.3s; z-index: 10; }
+        .pin-icon.active { filter: grayscale(0); opacity: 1; transform: scale(1.2); }
+        .note-card:hover .pin-icon { opacity: 1; }
+
+        .note-card h4 { margin: 0 0 12px 0; color: var(--accent); font-size: 19px; font-weight: 800; padding-left: 25px; }
+        .note-card p { font-size: 14px; opacity: 0.7; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; line-height: 1.8; margin: 0; }
+
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 4000; padding: 25px; backdrop-filter: blur(10px); }
+        .modal-content { background: #0f172a; width: 100%; max-width: 500px; padding: 40px; border-radius: 40px; border: 1px solid var(--border); position: relative; }
+
+        .popup-menu { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
+        .popup-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; padding: 15px; border-radius: 15px; cursor: pointer; text-align: center; font-weight: 700; }
+        .popup-btn:hover { background: var(--accent); color: #000; }
+
+        input, textarea, select { width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 15px; background: #1e293b; color: #fff; border: 1px solid var(--border); font-family: inherit; }
+
+        .fab { position: fixed; bottom: 40px; left: 40px; width: 80px; height: 80px; border-radius: 30px; background: var(--accent); color: #000; border: none; font-size: 40px; cursor: pointer; z-index: 100; box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4); }
+        
+        /* زر العودة للأعلى الجديد */
+        .back-to-top { 
+            position: fixed; bottom: 135px; left: 55px; width: 50px; height: 50px; 
+            border-radius: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); 
+            color: var(--accent); cursor: pointer; z-index: 99; display: none; 
+            align-items: center; justify-content: center; font-size: 20px; backdrop-filter: blur(10px);
+        }
+        .back-to-top:hover { background: var(--accent); color: #000; transform: translateY(-5px); }
+        .back-to-top.visible { display: flex; }
+
+        #toast { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 45px; border-radius: 20px; font-weight: 800; display: none; z-index: 5000; }
+        .highlight { background: var(--accent); color: #000; border-radius: 4px; padding: 0 2px; }
+    </style>
+</head>
+<body class="theme-all">
+
+<div id="toast">تم! ✅</div>
+
+<button id="backToTop" class="back-to-top" onclick="scrollToTop()">▲</button>
+
+<aside id="sidebar" class="sidebar">
+    <div class="fire-logo">H</div>
+    <div class="sidebar-header">Beef Aura Pro</div>
+    <span class="sidebar-tagline">Moataz Atef Team | Ultimate Edition</span>
+    
+    <div class="stats-panel">
+        <div class="stats-grid">
+            <div><span class="stat-val" id="stat-count">0</span><span class="stat-lbl">الكروت</span></div>
+            <div><span class="stat-val" id="stat-copies">0</span><span class="stat-lbl">النسخ</span></div>
+        </div>
+    </div>
+
+    <div class="actions-grid">
+        <button class="action-btn" onclick="openPopup('export')">📤 <span>Export Data</span></button>
+        <button class="action-btn" onclick="openPopup('import')">📥 <span>Import Data</span></button>
+        <button class="action-btn" onclick="openModal()">➕ <span>Add New Card</span></button>
+        <button class="action-btn" onclick="cycleTheme()">🎨 <span>Change Color</span></button>
+        <button class="action-btn" onclick="toggleSidebarPosition()">↔️ <span>Position</span></button>
+        <button class="action-btn" style="margin-top: auto; border:none; background:transparent; color:var(--accent)" onclick="toggleSidebar()">إغلاق القائمة (Esc)</button>
+    </div>
+</aside>
+
+<header>
+    <div class="nav-container">
+        <div class="app-branding">
+             <div class="mini-fire">H</div>
+             <div class="app-title">BEEF AURA PRO</div>
+        </div>
+        <div class="main-nav">
+            <div class="nav-item active" id="nav-all" onclick="switchSection('all')">🌈 الكل</div>
+            <div class="nav-item" id="nav-tech" onclick="switchSection('tech')">💻 Tech</div>
+            <div class="nav-item" id="nav-sales" onclick="switchSection('sales')">🏷️ Sales</div>
+            <div class="nav-item" id="nav-voice" onclick="switchSection('voice')">📞 Voice</div>
+        </div>
+        <button class="action-btn" style="width: auto; padding: 10px 25px;" onclick="toggleSidebar()">⚙️ Settings</button>
+    </div>
+</header>
+
+<div class="search-area">
+    <input type="text" id="searchInput" class="search-input" placeholder="ابحث بسرعة... (Ctrl + F)" oninput="render()">
+</div>
+
+<div class="notes-grid" id="notesGrid"></div>
+<button class="fab" onclick="openModal()">+</button>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h2 style="margin:0 0 20px 0; color:var(--accent)">إدارة البيانات</h2>
+        <select id="mainCatSelect">
+            <option value="tech">💻 Tech Section</option>
+            <option value="sales">🏷️ Sales Section</option>
+            <option value="voice">📞 Voice Section</option>
+        </select>
+        <input id="noteTitle" placeholder="العنوان (Keyword)" />
+        <textarea id="noteBody" rows="8" placeholder="المحتوى النصي"></textarea>
+        <div style="display: flex; gap: 15px;">
+            <button class="action-btn" style="flex: 2; background: var(--accent); color: #000; justify-content: center;" onclick="saveNote()">حفظ الكرت</button>
+            <button id="deleteBtn" class="action-btn" style="background: #ef4444; color: #fff; width: auto; display: none;" onclick="deleteNote(editingId)">🗑️</button>
+            <button class="action-btn" style="width: auto;" onclick="closeModal()">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="popupModal">
+    <div class="modal-content">
+        <h2 id="popupTitle" style="margin:0 0 10px 0; color:var(--accent)">خيار الإجراء</h2>
+        <div class="popup-menu" id="popupOptions"></div>
+        <button class="action-btn" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="closePopup()">إغلاق</button>
+    </div>
+</div>
+
+<input type="file" id="fileInput" hidden onchange="handleFileImport(event)">
+
+<script>
+    let notes = JSON.parse(localStorage.getItem('beef_aura_final_26') || '[]');
+    let copyTotal = parseInt(localStorage.getItem('aura_copy_total') || '0');
+    let currentView = 'all', editingId = null, currentImportFormat = '';
+
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    function toggleSidebarPosition() { document.getElementById('sidebar').classList.toggle('left'); }
+    
+    // العودة للأعلى
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    
+    window.onscroll = function() {
+        const btn = document.getElementById('backToTop');
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            btn.classList.add('visible');
+        } else {
+            btn.classList.remove('visible');
+        }
+    };
+
+    function switchSection(sec) {
+        currentView = sec;
+        document.body.className = 'theme-' + sec;
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        if(document.getElementById('nav-' + sec)) document.getElementById('nav-' + sec).classList.add('active');
+        render();
+    }
+
+    function togglePin(e, id) {
+        e.stopPropagation();
+        const idx = notes.findIndex(n => n.id === id);
+        notes[idx].pinned = !notes[idx].pinned;
+        localStorage.setItem('beef_aura_final_26', JSON.stringify(notes));
+        render();
+        showToast(notes[idx].pinned ? "تم التثبيت 📌" : "تم إلغاء التثبيت");
+    }
+
+    function render() {
+        const grid = document.getElementById('notesGrid');
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        grid.innerHTML = '';
+        
+        const sortedNotes = [...notes].sort((a, b) => {
+            if (a.pinned === b.pinned) return b.id - a.id;
+            return a.pinned ? -1 : 1;
+        });
+
+        const filtered = sortedNotes.filter(n => (currentView === 'all' || n.main === currentView) && (n.title.toLowerCase().includes(query) || n.content.toLowerCase().includes(query)));
+        
+        document.getElementById('stat-count').innerText = notes.length;
+        document.getElementById('stat-copies').innerText = copyTotal;
+
+        filtered.forEach(n => {
+            const card = document.createElement('div');
+            card.className = `note-card ${n.pinned ? 'pinned' : ''}`;
+            card.style.borderTop = `6px solid var(--${n.main})`;
+            
+            let titleHTML = n.title;
+            if(query) titleHTML = n.title.replace(new RegExp(query, 'gi'), m => `<span class="highlight">${m}</span>`);
+            
+            card.onclick = () => { 
+                 navigator.clipboard.writeText(n.content);
+                 copyTotal++; localStorage.setItem('aura_copy_total', copyTotal);
+                 document.getElementById('stat-copies').innerText = copyTotal;
+                 showToast("تم النسخ!"); 
+            };
+            card.ondblclick = () => openModal(n.id);
+            
+            card.innerHTML = `
+                <div class="pin-icon ${n.pinned ? 'active' : ''}" onclick="togglePin(event, ${n.id})">📌</div>
+                <h4>${titleHTML}</h4>
+                <p>${n.content}</p>
+                <div style="margin-top:auto; font-size:10px; opacity:0.4">📅 ${new Date(n.id).toLocaleDateString('ar-EG')}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function openModal(id = null) {
+        editingId = id;
+        const n = notes.find(x => x.id === id);
+        document.getElementById('deleteBtn').style.display = id ? 'flex' : 'none';
+        document.getElementById('mainCatSelect').value = n ? n.main : 'tech';
+        document.getElementById('noteTitle').value = n ? n.title : '';
+        document.getElementById('noteBody').value = n ? n.content : '';
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() { document.getElementById('modal').style.display = 'none'; editingId = null; }
+
+    function saveNote() {
+        const main = document.getElementById('mainCatSelect').value;
+        const title = document.getElementById('noteTitle').value || 'بدون عنوان';
+        const content = document.getElementById('noteBody').value;
+        if(!content) return;
+        if(editingId) {
+            const idx = notes.findIndex(x => x.id === editingId);
+            notes[idx] = { ...notes[idx], main, title, content };
+        } else {
+            notes.push({ id: Date.now(), main, title, content, pinned: false });
+        }
+        localStorage.setItem('beef_aura_final_26', JSON.stringify(notes));
+        closeModal(); render();
+    }
+
+    function deleteNote(id) {
+        if(confirm('حذف الكرت نهائياً؟')) {
+            notes = notes.filter(n => n.id !== id);
+            localStorage.setItem('beef_aura_final_26', JSON.stringify(notes));
+            closeModal(); render();
+        }
+    }
+
+    function openPopup(type) {
+        const title = document.getElementById('popupTitle');
+        const container = document.getElementById('popupOptions');
+        container.innerHTML = '';
+        if(type === 'export') {
+            title.innerText = "تصدير البيانات";
+            [{n:'JSON (Backup)', f:exportJSON}, {n:'Text (.txt)', f:exportTXT}, {n:'Excel (CSV)', f:exportCSV}].forEach(fmt => {
+                const btn = document.createElement('div'); btn.className = 'popup-btn'; btn.innerText = fmt.n;
+                btn.onclick = () => { fmt.f(); closePopup(); }; container.appendChild(btn);
+            });
+        } else {
+            title.innerText = "استيراد بيانات";
+            ['Backup', 'Text', 'CSV / Excel'].forEach(fmt => {
+                const btn = document.createElement('div'); btn.className = 'popup-btn'; btn.innerText = fmt;
+                btn.onclick = () => { currentImportFormat = fmt; document.getElementById('fileInput').click(); closePopup(); };
+                container.appendChild(btn);
+            });
+        }
+        document.getElementById('popupModal').style.display = 'flex';
+    }
+    function closePopup() { document.getElementById('popupModal').style.display = 'none'; }
+
+    function downloadFile(content, fileName, type) {
+        const blob = new Blob([content], {type: type});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fileName; a.click();
+    }
+    function exportJSON() { downloadFile(JSON.stringify(notes, null, 2), 'Aura_Backup.json', 'application/json'); }
+    function exportTXT() { downloadFile(notes.map(n => `[${n.title}]\n${n.content}\n---`).join('\n\n'), 'Aura_Notes.txt', 'text/plain'); }
+    function exportCSV() { 
+        let csv = "ID,Category,Title,Content\n" + notes.map(n => `${n.id},${n.main},"${n.title.replace(/"/g,'""')}","${n.content.replace(/"/g,'""')}"`).join('\n');
+        downloadFile("\ufeff" + csv, 'Aura_Data.csv', 'text/csv;charset=utf-8;');
+    }
+
+    function handleFileImport(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const raw = e.target.result;
+            try {
+                let imported = [];
+                if(currentImportFormat === 'Backup') imported = JSON.parse(raw);
+                else if(currentImportFormat === 'Text') {
+                    raw.split('---').forEach(s => {
+                        const lines = s.trim().split('\n');
+                        if(lines.length >= 2) imported.push({ id: Date.now()+Math.random(), main: 'tech', title: lines[0].replace(/[\[\]]/g, ''), content: lines.slice(1).join('\n'), pinned: false });
+                    });
+                }
+                notes = [...notes, ...imported];
+                localStorage.setItem('beef_aura_final_26', JSON.stringify(notes));
+                render(); showToast("تم الاستيراد!");
+            } catch(err) { showToast("خطأ في الملف!"); }
+        };
+        reader.readAsText(file);
+    }
+
+    function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display='none', 2000); }
+    function cycleTheme() {
+        const themes = ['all', 'tech', 'sales', 'voice'];
+        switchSection(themes[(themes.indexOf(currentView) + 1) % themes.length]);
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === "Escape") { document.getElementById('sidebar').classList.remove('active'); closeModal(); closePopup(); } });
+
+    render();
+</script>
+</body>
+</html>
