@@ -1,178 +1,461 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ملاحظاتي - Modern</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#f4f6f8; --card:#ffffff; --muted:#6b7280; --accent:#7c3aed;
-    --glass: rgba(255,255,255,0.6);
-  }
-  [data-theme='dark']{--bg:#0b1020;--card:#061126;--muted:#9aa4b2;--glass: rgba(255,255,255,0.03)}
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;color:var(--muted);background:var(--bg);min-height:100vh}
-  .app{max-width:1100px;margin:18px auto;padding:12px}
-  .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
-  .brand{font-weight:700;color:var(--accent);font-size:20px}
-  .controls{display:flex;gap:8px;align-items:center}
-  .searchbox{background:var(--card);padding:8px;border-radius:12px;display:flex;gap:8px;align-items:center;width:320px;box-shadow:0 6px 18px rgba(16,24,40,0.06)}
-  .searchbox input{border:0;background:transparent;outline:none;padding:6px}
-  .view{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-  .note{background:var(--card);padding:14px;border-radius:14px;min-height:110px;position:relative;box-shadow:0 8px 30px rgba(2,6,23,0.06);transition:transform .18s,box-shadow .18s}
-  .note:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(2,6,23,0.12)}
-  .note h4{margin:0 0 8px;color:#0f1724}
-  .note p{margin:0;color:var(--muted);white-space:pre-wrap}
-  .note .foot{position:absolute;left:12px;bottom:12px;font-size:12px;color:var(--muted)}
-  .fab{position:fixed;bottom:22px;left:22px;background:var(--accent);color:#fff;border:0;border-radius:12px;padding:12px 16px;font-size:16px;box-shadow:0 14px 30px rgba(124,58,237,0.18);cursor:pointer}
-  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(0deg,rgba(2,6,23,0.45),rgba(2,6,23,0.45))}
-  .modal .box{width:100%;max-width:720px;background:var(--card);padding:16px;border-radius:12px}
-  input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;background:transparent;outline:none}
-  .row{display:flex;gap:8px;margin-top:8px;align-items:center}
-  .tiny{font-size:13px;color:var(--muted)}
-  .color-palette{display:flex;gap:8px}
-  .sw{padding:8px;border-radius:8px;background:var(--card);cursor:pointer;border:1px solid rgba(0,0,0,0.05)}
-  @media (max-width:640px){
-    .top{flex-direction:column;align-items:stretch;gap:10px}
-    .searchbox{width:100%}
-  }
-</style>
-</head>
-<body data-theme="light">
-<div class="app">
-  <div class="top">
-    <div class="brand">ملاحظاتي — مودرن</div>
-    <div class="controls">
-      <div class="searchbox"><input id="q" placeholder="ابحث..." /></div>
-      <button class="sw" id="toggleTheme">وضع داكن</button>
-      <button class="sw" id="openNew">أضف</button>
-    </div>
-  </div>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beef Aura Pro | 2026 Ultimate Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05070a; 
+            --card: rgba(30, 41, 59, 0.7); 
+            --text: #f8fafc; 
+            --accent: #8b5cf6; 
+            --tech: #06b6d4; 
+            --sales: #fbbf24; 
+            --voice: #f472b6;
+            --border: rgba(255, 255, 255, 0.1);
+            --sidebar-width: 320px;
+            --fire: #ff4d00;
+        }
+        .theme-tech { --accent: var(--tech); }
+        .theme-sales { --accent: var(--sales); }
+        .theme-voice { --accent: var(--voice); }
+        .theme-all { --accent: #8b5cf6; }
 
-  <div id="view" class="view"></div>
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { 
+            margin: 0; font-family: 'Cairo', sans-serif; color: var(--text); background: var(--bg);
+            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1), transparent),
+                              radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.1), transparent);
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        /* Sidebar & Logo */
+        .fire-logo {
+            width: 80px; height: 80px; background: #111; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 50px; font-weight: 900; color: #fff;
+            text-shadow: 0 0 10px #ff4d00, 0 0 20px #ff9900, 0 0 30px #ff4d00;
+            border: 2px solid #ff4d00; box-shadow: 0 0 20px rgba(255, 77, 0, 0.4);
+            margin: 0 auto; position: relative; overflow: hidden;
+        }
+
+        .sidebar {
+            position: fixed; top: 0; right: -350px; width: var(--sidebar-width); height: 100%;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px);
+            border-left: 1px solid var(--border); z-index: 3000; padding: 40px 25px;
+            box-shadow: -15px 0 50px rgba(0,0,0,0.8); display: flex; flex-direction: column;
+        }
+        .sidebar.active { right: 0; }
+        .sidebar.left { right: auto; left: -350px; border-left: none; border-right: 1px solid var(--border); }
+        .sidebar.left.active { left: 0; }
+
+        .sidebar-header { font-size: 22px; font-weight: 900; color: #fff; margin-top: 15px; text-align: center;}
+        .sidebar-tagline { font-size: 11px; opacity: 0.5; margin-bottom: 30px; display: block; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
+
+        /* Stats & Buttons */
+        .stats-panel { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 20px; margin-bottom: 25px; border: 1px solid var(--border); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center; }
+        .stat-val { display: block; font-size: 20px; font-weight: 900; color: var(--accent); }
+        .stat-lbl { font-size: 10px; opacity: 0.5; text-transform: uppercase; }
+
+        .actions-grid { display: flex; flex-direction: column; gap: 12px; }
+        .action-btn { 
+            width: 100%; display: flex; align-items: center; gap: 12px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); 
+            color: #fff; padding: 14px 20px; border-radius: 16px; 
+            cursor: pointer; font-weight: 600; font-family: inherit; font-size: 13px;
+        }
+        .action-btn:hover { background: var(--accent); color: #000; transform: translateX(-10px); box-shadow: 0 0 20px var(--accent); }
+        
+        .undo-redo-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        /* Navigation */
+        header { 
+            background: rgba(5, 7, 10, 0.8); backdrop-filter: blur(15px);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); padding: 15px 0;
+        }
+        .nav-container { max-width: 1300px; margin: 0 auto; padding: 0 25px; display: flex; justify-content: space-between; align-items: center; }
+        .app-branding { display: flex; align-items: center; gap: 12px; }
+        .mini-fire { font-size: 20px; color: #ff4d00; text-shadow: 0 0 5px #ff4d00; font-weight: 900;}
+        .app-title { font-weight: 900; font-size: 20px; letter-spacing: -1px; color: var(--text); }
+        
+        .main-nav { display: flex; gap: 8px; }
+        .nav-item { cursor: pointer; padding: 8px 18px; border-radius: 10px; font-weight: 700; opacity: 0.4; font-size: 13px; }
+        .nav-item.active { opacity: 1; background: rgba(255,255,255,0.05); color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+
+        /* Main Content */
+        .search-area { max-width: 1300px; margin: 40px auto; padding: 0 25px; }
+        .search-input { 
+            width: 100%; background: var(--card); border: 1px solid var(--border); 
+            padding: 18px 30px; border-radius: 25px; color: #fff; outline: none;
+            font-size: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; max-width: 1300px; margin: 0 auto; padding: 0 25px 120px; }
+        .note-card { 
+            background: var(--card); border-radius: 30px; border: 1px solid var(--border); 
+            padding: 30px; height: 220px; display: flex; flex-direction: column; 
+            cursor: pointer; position: relative; backdrop-filter: blur(5px);
+        }
+        .note-card.pinned { border: 2px solid var(--accent) !important; box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); }
+        .pin-icon { position: absolute; top: 15px; left: 15px; font-size: 18px; filter: grayscale(1); opacity: 0.3; transition: 0.3s; z-index: 10; }
+        .pin-icon.active { filter: grayscale(0); opacity: 1; transform: scale(1.2); }
+
+        .note-card h4 { margin: 0 0 12px 0; color: var(--accent); font-size: 19px; font-weight: 800; padding-left: 25px; }
+        .note-card p { font-size: 14px; opacity: 0.7; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; line-height: 1.8; margin: 0; }
+
+        /* Modals & Popups */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 4000; padding: 25px; backdrop-filter: blur(10px); }
+        .modal-content { background: #0f172a; width: 100%; max-width: 500px; padding: 40px; border-radius: 40px; border: 1px solid var(--border); position: relative; }
+
+        .popup-menu { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
+        .popup-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; padding: 15px; border-radius: 15px; cursor: pointer; text-align: center; font-weight: 700; }
+        .popup-btn:hover { background: var(--accent); color: #000; }
+
+        input, textarea, select { width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 15px; background: #1e293b; color: #fff; border: 1px solid var(--border); font-family: inherit; }
+        .fab { position: fixed; bottom: 40px; left: 40px; width: 80px; height: 80px; border-radius: 30px; background: var(--accent); color: #000; border: none; font-size: 40px; cursor: pointer; z-index: 100; box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4); }
+        .back-to-top { position: fixed; bottom: 135px; left: 55px; width: 50px; height: 50px; border-radius: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--accent); cursor: pointer; z-index: 99; display: none; align-items: center; justify-content: center; font-size: 20px; backdrop-filter: blur(10px); }
+        .back-to-top.visible { display: flex; }
+
+        #toast { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 45px; border-radius: 20px; font-weight: 800; display: none; z-index: 5000; }
+        .highlight { background: var(--accent); color: #000; border-radius: 4px; padding: 0 2px; }
+    </style>
+</head>
+<body class="theme-all">
+
+<div id="toast">تم! ✅</div>
+<button id="backToTop" class="back-to-top" onclick="scrollToTop()">▲</button>
+
+<aside id="sidebar" class="sidebar">
+    <div class="fire-logo">H</div>
+    <div class="sidebar-header">Beef Aura Pro</div>
+    <span class="sidebar-tagline">Moataz Atef Team | Ultimate Edition</span>
+    
+    <div class="stats-panel">
+        <div class="stats-grid">
+            <div><span class="stat-val" id="stat-count">0</span><span class="stat-lbl">الكروت</span></div>
+            <div><span class="stat-val" id="stat-copies">0</span><span class="stat-lbl">النسخ</span></div>
+        </div>
+    </div>
+
+    <div class="actions-grid">
+        <button class="action-btn" onclick="openPopup('export')">📤 <span>Export Data</span></button>
+        <button class="action-btn" onclick="openPopup('import')">📥 <span>Import Data</span></button>
+        <button class="action-btn" onclick="openModal()">➕ <span>Add New Card</span></button>
+        
+        <div class="undo-redo-container">
+            <button class="action-btn" onclick="undo()" title="تراجع (Ctrl+Z)">↩️ Undo</button>
+            <button class="action-btn" onclick="redo()" title="إعادة (Ctrl+Y)">↪️ Redo</button>
+        </div>
+        <button class="action-btn" onclick="resetData()" style="color: #ff4d00; border-color: rgba(255, 77, 0, 0.2);">🗑️ Reset All Data</button>
+        
+        <button class="action-btn" onclick="cycleTheme()">🎨 <span>Change Color</span></button>
+        <button class="action-btn" onclick="toggleSidebarPosition()">↔️ <span>Position</span></button>
+        <button class="action-btn" style="margin-top: auto; border:none; background:transparent; color:var(--accent)" onclick="toggleSidebar()">إغلاق (Esc)</button>
+    </div>
+</aside>
+
+<header>
+    <div class="nav-container">
+        <div class="app-branding">
+              <div class="mini-fire">H</div>
+              <div class="app-title">BEEF AURA PRO</div>
+        </div>
+        <div class="main-nav">
+            <div class="nav-item active" id="nav-all" onclick="switchSection('all')">🌈 الكل</div>
+            <div class="nav-item" id="nav-tech" onclick="switchSection('tech')">💻 Tech</div>
+            <div class="nav-item" id="nav-sales" onclick="switchSection('sales')">🏷️ Sales</div>
+            <div class="nav-item" id="nav-voice" onclick="switchSection('voice')">📞 Voice</div>
+        </div>
+        <button class="action-btn" style="width: auto; padding: 10px 25px;" onclick="toggleSidebar()">⚙️ Settings</button>
+    </div>
+</header>
+
+<div class="search-area">
+    <input type="text" id="searchInput" class="search-input" placeholder="ابحث بسرعة... (Ctrl + F)" oninput="render()">
 </div>
 
-<button class="fab" id="fab">+</button>
+<div class="notes-grid" id="notesGrid"></div>
+
+<button class="fab" onclick="openModal()">+</button>
 
 <div class="modal" id="modal">
-  <div class="box">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <strong>ملاحظة جديدة</strong>
-      <button onclick="closeModal()" class="sw">✕</button>
+    <div class="modal-content">
+        <h2 style="margin:0 0 20px 0; color:var(--accent)">إدارة البيانات</h2>
+        <select id="mainCatSelect">
+            <option value="tech">💻 Tech Section</option>
+            <option value="sales">🏷️ Sales Section</option>
+            <option value="voice">📞 Voice Section</option>
+        </select>
+        <input id="noteTitle" placeholder="العنوان (Keyword)" />
+        <textarea id="noteBody" rows="8" placeholder="المحتوى النصي"></textarea>
+        <div style="display: flex; gap: 15px;">
+            <button class="action-btn" style="flex: 2; background: var(--accent); color: #000; justify-content: center;" onclick="saveNote()">حفظ الكرت</button>
+            <button id="deleteBtn" class="action-btn" style="background: #ef4444; color: #fff; width: auto; display: none;" onclick="deleteNote(editingId)">🗑️</button>
+            <button class="action-btn" style="width: auto;" onclick="closeModal()">إلغاء</button>
+        </div>
     </div>
-    <div style="margin-top:10px">
-      <input id="title" placeholder="العنوان" />
-      <textarea id="body" placeholder="النص ..." style="min-height:120px"></textarea>
-      <div class="row">
-        <select id="group"></select>
-        <div class="color-palette" id="palette"></div>
-        <button class="sw" id="save">حفظ</button>
-      </div>
-    </div>
-  </div>
 </div>
 
+<div class="modal" id="popupModal">
+    <div class="modal-content">
+        <h2 id="popupTitle" style="margin:0 0 10px 0; color:var(--accent)">خيار الإجراء</h2>
+        <div class="popup-menu" id="popupOptions"></div>
+        <button class="action-btn" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="closePopup()">إغلاق</button>
+    </div>
+</div>
+
+<input type="file" id="fileInput" hidden onchange="handleFileImport(event)">
+
 <script>
-/* Modern app */
-const paletteColors = ['#fff8e1','#ffebee','#e8f5e9','#e3f2fd','#f3e5f5'];
-let groups = JSON.parse(localStorage.getItem('m_groups')||'["الكل","Today","Work"]');
-let notes = JSON.parse(localStorage.getItem('m_notes')||'[]');
-let editing = null;
-let selectedColor = paletteColors[0];
+    // --- State Management ---
+    let notes = JSON.parse(localStorage.getItem('beef_aura_final_26') || '[]');
+    let history = [JSON.stringify(notes)]; 
+    let historyStep = 0;
+    
+    let copyTotal = parseInt(localStorage.getItem('aura_copy_total') || '0');
+    let currentView = 'all', editingId = null, currentImportFormat = '';
 
-const view = document.getElementById('view');
-const modal = document.getElementById('modal');
+    // --- Undo / Redo System ---
+    function saveToHistory() {
+        const state = JSON.stringify(notes);
+        if (state !== history[historyStep]) {
+            history = history.slice(0, historyStep + 1);
+            history.push(state);
+            historyStep++;
+            if (history.length > 50) { history.shift(); historyStep--; }
+        }
+    }
 
-function save(){ localStorage.setItem('m_notes',JSON.stringify(notes)); localStorage.setItem('m_groups',JSON.stringify(groups)); }
-function renderPalette(){
-  const pal = document.getElementById('palette'); pal.innerHTML='';
-  paletteColors.forEach(c=>{
-    const d = document.createElement('div'); d.style.width='28px'; d.style.height='28px'; d.style.borderRadius='8px'; d.style.background=c; d.style.cursor='pointer';
-    d.onclick = ()=>{ selectedColor=c; Array.from(pal.children).forEach(ch=>ch.style.outline='none'); d.style.outline='3px solid rgba(0,0,0,0.08)'; }
-    pal.appendChild(d);
-  });
-}
-function renderGroups(){
-  const gsel = document.getElementById('group'); gsel.innerHTML = groups.map(x=>`<option>${x}</option>`).join('');
-}
-function sampleIfEmpty(){
-  if(!notes.length){
-    notes = [{id:Date.now().toString(),title:'أفكار للتطبيق',content:'1. واجهة بسيطة\n2. حفظ محلي',color:paletteColors[2],group:'Work',pinned:false}];
-    save();
-  }
-}
-function render(){
-  view.innerHTML='';
-  const q = document.getElementById('q').value.toLowerCase();
-  notes.forEach(n=>{
-    if(q && !(n.title+n.content+n.group).toLowerCase().includes(q)) return;
-    const card = document.createElement('div'); card.className='note'; card.style.background=n.color; card.draggable=true;
-    card.innerHTML = `<h4>${n.title||''}</h4><p>${n.content||''}</p><div class="foot">${n.group}${n.pinned?' • 📌':''}</div>`;
-    // actions
-    const tools = document.createElement('div'); tools.style.position='absolute'; tools.style.left='12px'; tools.style.top='12px';
-    const pin = document.createElement('button'); pin.className='sw'; pin.innerText=n.pinned?'إلغاء تثبيت':'تثبيت'; pin.onclick=e=>{ e.stopPropagation(); n.pinned=!n.pinned; save(); render(); };
-    const edit = document.createElement('button'); edit.className='sw'; edit.innerText='✏️'; edit.onclick=e=>{ e.stopPropagation(); openModal(n) };
-    const del = document.createElement('button'); del.className='sw'; del.innerText='🗑️'; del.onclick=e=>{ e.stopPropagation(); if(confirm('حذف؟')){ notes=notes.filter(x=>x.id!==n.id); save(); render(); } };
-    tools.appendChild(pin); tools.appendChild(edit); tools.appendChild(del); card.appendChild(tools);
+    function undo() {
+        if (historyStep > 0) {
+            historyStep--;
+            notes = JSON.parse(history[historyStep]);
+            saveAndRender("تم التراجع ↩️");
+        } else { showToast("لا يوجد تراجع إضافي"); }
+    }
 
-    card.addEventListener('dragstart', e=> e.dataTransfer.setData('id', n.id));
-    card.addEventListener('click', ()=> { navigator.clipboard.writeText((n.title?n.title+'\n':'')+n.content); card.style.transform='scale(.99)'; setTimeout(()=>card.style.transform='scale(1)',130); });
+    function redo() {
+        if (historyStep < history.length - 1) {
+            historyStep++;
+            notes = JSON.parse(history[historyStep]);
+            saveAndRender("إعادة الخطوة ↪️");
+        } else { showToast("وصلت لأحدث تعديل"); }
+    }
 
-    view.appendChild(card);
-  });
-}
+    function resetData() {
+        if (confirm("⚠️ تحذير: سيتم حذف جميع الكروت. هل تريد الاستمرار؟")) {
+            notes = [];
+            saveToHistory();
+            saveAndRender("تم المسح الشامل 🧹");
+        }
+    }
 
-function openModal(note){
-  editing = note?note.id:null;
-  modal.style.display='flex';
-  document.getElementById('title').value = note?note.title:'';
-  document.getElementById('body').value = note?note.content:'';
-  selectedColor = note?note.color:selectedColor;
-  renderGroups();
-}
-function closeModal(){ modal.style.display='none'; editing=null; }
+    function saveAndRender(msg) {
+        localStorage.setItem('beef_aura_final_26', JSON.stringify(notes));
+        render();
+        if(msg) showToast(msg);
+    }
 
-document.getElementById('fab').onclick = ()=> openModal();
-document.getElementById('openNew').onclick = ()=> openModal();
-document.getElementById('save').onclick = ()=>{
-  const title = document.getElementById('title').value.trim();
-  const content = document.getElementById('body').value.trim();
-  const group = document.getElementById('group').value || groups[0];
-  if(!title && !content) return alert('اكتب شيئاً');
-  if(editing){
-    const n = notes.find(x=>x.id===editing);
-    n.title=title; n.content=content; n.color=selectedColor; n.group=group;
-  } else {
-    notes.unshift({id:Date.now().toString(),title,content,color:selectedColor,group,pinned:false});
-  }
-  save(); render(); closeModal();
-};
+    // --- Core UI Functions ---
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    function toggleSidebarPosition() { document.getElementById('sidebar').classList.toggle('left'); }
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    
+    function switchSection(sec) {
+        currentView = sec;
+        document.body.className = 'theme-' + sec;
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        if(document.getElementById('nav-' + sec)) document.getElementById('nav-' + sec).classList.add('active');
+        render();
+    }
 
-document.getElementById('q').addEventListener('input', render);
+    function render() {
+        const grid = document.getElementById('notesGrid');
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        grid.innerHTML = '';
+        
+        const sortedNotes = [...notes].sort((a, b) => (a.pinned === b.pinned) ? b.id - a.id : (a.pinned ? -1 : 1));
+        const filtered = sortedNotes.filter(n => (currentView === 'all' || n.main === currentView) && (n.title.toLowerCase().includes(query) || n.content.toLowerCase().includes(query)));
+        
+        document.getElementById('stat-count').innerText = notes.length;
+        document.getElementById('stat-copies').innerText = copyTotal;
 
-// drag drop to top
-view.addEventListener('dragover', e=> e.preventDefault());
-view.addEventListener('drop', e=>{
-  const id = e.dataTransfer.getData('id');
-  const idx = notes.findIndex(x=>x.id===id);
-  if(idx>=0){ const [it]=notes.splice(idx,1); notes.unshift(it); save(); render(); }
-});
+        filtered.forEach(n => {
+            const card = document.createElement('div');
+            card.className = `note-card ${n.pinned ? 'pinned' : ''}`;
+            card.style.borderTop = `6px solid var(--${n.main})`;
+            
+            let titleHTML = n.title;
+            if(query) titleHTML = n.title.replace(new RegExp(query, 'gi'), m => `<span class="highlight">${m}</span>`);
 
-// theme toggle
-const themeBtn = document.getElementById('toggleTheme');
-themeBtn.onclick = ()=>{
-  const el = document.body;
-  const cur = el.getAttribute('data-theme')==='dark'?'light':'dark';
-  el.setAttribute('data-theme',cur);
-  themeBtn.innerText = cur==='dark'?'وضع فاتح':'وضع داكن';
-};
+            card.onclick = () => { 
+                 navigator.clipboard.writeText(n.content); 
+                 copyTotal++; localStorage.setItem('aura_copy_total', copyTotal);
+                 document.getElementById('stat-copies').innerText = copyTotal;
+                 showToast("تم النسخ!"); 
+            };
+            card.ondblclick = () => openModal(n.id);
+            card.innerHTML = `
+                <div class="pin-icon ${n.pinned ? 'active' : ''}" onclick="togglePin(event, ${n.id})">📌</div>
+                <h4>${titleHTML}</h4>
+                <p>${n.content}</p>
+                <div style="margin-top:auto; font-size:10px; opacity:0.4">📅 ${new Date(n.id).toLocaleDateString('ar-EG')}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
 
-renderPalette();
-sampleIfEmpty();
-renderGroups();
-render();
+    // --- CRUD Actions ---
+    function saveNote() {
+        const main = document.getElementById('mainCatSelect').value;
+        const title = document.getElementById('noteTitle').value || 'بدون عنوان';
+        const content = document.getElementById('noteBody').value;
+        if(!content) return;
+        
+        if(editingId) {
+            const idx = notes.findIndex(x => x.id === editingId);
+            notes[idx] = { ...notes[idx], main, title, content };
+        } else {
+            notes.push({ id: Date.now(), main, title, content, pinned: false });
+        }
+        
+        saveToHistory();
+        saveAndRender("تم الحفظ ✅");
+        closeModal();
+    }
+
+    function deleteNote(id) {
+        if(confirm('حذف هذا الكرت؟')) {
+            notes = notes.filter(n => n.id !== id);
+            saveToHistory();
+            saveAndRender("تم الحذف");
+            closeModal();
+        }
+    }
+
+    function togglePin(e, id) {
+        e.stopPropagation();
+        const idx = notes.findIndex(n => n.id === id);
+        notes[idx].pinned = !notes[idx].pinned;
+        saveToHistory();
+        saveAndRender();
+    }
+
+    function openModal(id = null) {
+        editingId = id;
+        const n = notes.find(x => x.id === id);
+        document.getElementById('deleteBtn').style.display = id ? 'flex' : 'none';
+        document.getElementById('mainCatSelect').value = n ? n.main : 'tech';
+        document.getElementById('noteTitle').value = n ? n.title : '';
+        document.getElementById('noteBody').value = n ? n.content : '';
+        document.getElementById('modal').style.display = 'flex';
+    }
+    function closeModal() { document.getElementById('modal').style.display = 'none'; editingId = null; }
+    function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display='none', 2000); }
+
+    // --- Export / Import System (Restored All Features) ---
+    const exportActions = {
+        download: (content, fileName, type) => {
+            const blob = new Blob([content], {type: type});
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fileName;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
+        },
+        json: function() { this.download(JSON.stringify(notes, null, 2), 'Aura_Backup.json', 'application/json'); },
+        txt: function() {
+            const content = notes.map(n => `[${n.title}]\n${n.content}\n---`).join('\n\n');
+            this.download(content, 'Aura_Notes.txt', 'text/plain');
+        },
+        csv: function() {
+            let csv = "ID,Category,Title,Content\n" + notes.map(n => 
+                `${n.id},${n.main},"${n.title.replace(/"/g,'""')}","${n.content.replace(/"/g,'""')}"`
+            ).join('\n');
+            this.download("\ufeff" + csv, 'Aura_Data.csv', 'text/csv;charset=utf-8;');
+        },
+        beeftext: function() {
+            const btData = { combos: notes.map(n => ({ 
+                keyword: n.title, snippet: n.content, enabled: true, name: n.title, 
+                uuid: `{${Math.random().toString(36).substr(2, 9)}}` 
+            })) };
+            this.download(JSON.stringify(btData, null, 2), 'BeefAura_Export.btbackup', 'application/json');
+        }
+    };
+
+    function openPopup(type) {
+        const title = document.getElementById('popupTitle');
+        const container = document.getElementById('popupOptions');
+        container.innerHTML = '';
+        if(type === 'export') {
+            title.innerText = "تصدير البيانات";
+            [
+                {n:'JSON (Backup)', f:()=>exportActions.json()}, 
+                {n:'Beeftext (.btbackup)', f:()=>exportActions.beeftext()},
+                {n:'Text (.txt)', f:()=>exportActions.txt()},
+                {n:'Excel (CSV)', f:()=>exportActions.csv()}
+            ].forEach(opt => {
+                const btn = document.createElement('div'); btn.className = 'popup-btn'; btn.innerText = opt.n; 
+                btn.onclick = () => { opt.f(); closePopup(); };
+                container.appendChild(btn);
+            });
+        } else {
+            title.innerText = "استيراد بيانات";
+            ['Backup (JSON)', 'Beeftext (.btbackup)', 'Text', 'CSV / Excel'].forEach(fmt => {
+                const btn = document.createElement('div'); btn.className = 'popup-btn'; btn.innerText = fmt; 
+                btn.onclick = () => { currentImportFormat = fmt; document.getElementById('fileInput').click(); closePopup(); };
+                container.appendChild(btn);
+            });
+        }
+        document.getElementById('popupModal').style.display = 'flex';
+    }
+    function closePopup() { document.getElementById('popupModal').style.display = 'none'; }
+
+    function handleFileImport(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const raw = e.target.result;
+            try {
+                let imported = [];
+                if (currentImportFormat.includes('CSV')) {
+                   // مبسط جداً لـ CSV
+                   const lines = raw.split('\n').slice(1);
+                   imported = lines.map(line => {
+                       const parts = line.split(',');
+                       return { id: Date.now()+Math.random(), main: 'tech', title: parts[2]||'Imported', content: parts[3]||'', pinned: false };
+                   });
+                } else {
+                   const parsed = JSON.parse(raw);
+                   imported = parsed.combos ? parsed.combos.map(c => ({ 
+                       id: Date.now()+Math.random(), main: 'tech', title: c.keyword || c.name, content: c.snippet, pinned: false 
+                   })) : parsed;
+                }
+                
+                if (Array.isArray(imported)) {
+                    notes = [...notes, ...imported];
+                    saveToHistory();
+                    saveAndRender(`تم استيراد ${imported.length} كرت!`);
+                }
+            } catch(err) { showToast("خطأ في تنسيق الملف!"); }
+        };
+        reader.readAsText(file);
+    }
+
+    function cycleTheme() {
+        const themes = ['all', 'tech', 'sales', 'voice'];
+        switchSection(themes[(themes.indexOf(currentView) + 1) % themes.length]);
+    }
+
+    // --- Keyboard Shortcuts ---
+    document.addEventListener('keydown', (e) => { 
+        if (e.key === "Escape") { document.getElementById('sidebar').classList.remove('active'); closeModal(); closePopup(); }
+        if (e.ctrlKey && e.key === 'z') { e.preventDefault(); undo(); }
+        if (e.ctrlKey && e.key === 'y') { e.preventDefault(); redo(); }
+    });
+
+    render();
 </script>
 </body>
-
-
+</html>
